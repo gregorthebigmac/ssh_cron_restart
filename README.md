@@ -14,8 +14,8 @@ So the way this works is as follows:
     ```
 3.  Copy+paste the following into the end of the crontab file, replacing the path with wherever you stored restart_sshd.sh:
     ```
-	@reboot sleep 20 && /root/scripts/restart_sshd.sh
-	```
+	  @reboot sleep 20 && /root/scripts/restart_sshd.sh
+	  ```
 4. Save and exit.
 
 Now, whenever your machine reboots (or just powers on), it will wait 20 seconds after rebooting (which should give it enough time for the networking functions to come online), and *then* it will restart the sshd service. As far as I can tell, the cause of the sshd problem failing on boot is simply because it's trying to fire up the sshd service before networking functions are done, and it has a network connection. By using this cronjob, it makes sure that enough time has passed that if it's going to get a network connection, it should be active by the time the cronjob runs, and sshd should be working shortly after booting up.
